@@ -2,6 +2,7 @@
 
 import pandas as pd
 import streamlit as st
+import os
 import plotly.express as px
 from sklearn.linear_model import LinearRegression
 
@@ -9,22 +10,14 @@ from sklearn.linear_model import LinearRegression
 # Function to load the processed data
 # -----------------------------
 @st.cache_data
-def load_data(filepath="data/processed_dataset.csv"):
-    """
-    Loads the processed dataset.
-
-    Args:
-        filepath (str): Path to the processed dataset.
-
-    Returns:
-        pd.DataFrame: Loaded data.
-    """
-    try:
-        data = pd.read_csv(filepath)
-        return data
-    except FileNotFoundError:
-        st.error("Processed dataset not found. Please run the processing script first.")
-        return pd.DataFrame()
+def load_data():
+    path = "data/processed_dataset.csv"
+    st.write("📂 Current working dir:", os.getcwd())
+    if not os.path.exists(path):
+        st.error(f"❌ File not found: {path}")
+        st.stop()
+    df = pd.read_csv(path)
+    return df
 
 # Main function to run the Streamlit app
 def main():
